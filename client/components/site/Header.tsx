@@ -1,0 +1,44 @@
+import { Link, NavLink, useLocation } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+
+const navItems = [
+  { to: "/", label: "Search" },
+  { to: "/listings", label: "Listings" },
+  { to: "/about", label: "About" },
+  { to: "/contact", label: "Contact" },
+];
+
+export default function Header() {
+  const { pathname } = useLocation();
+  return (
+    <header className="sticky top-0 z-40 w-full border-b bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+        <Link to="/" className="flex items-center gap-2">
+          <div className="h-8 w-8 rounded-md bg-primary " />
+          <span className="font-extrabold tracking-tight text-xl text-primary">Rentora</span>
+        </Link>
+        <nav className="hidden md:flex items-center gap-6">
+          {navItems.map((item) => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              className={({ isActive }) =>
+                cn(
+                  "text-sm font-medium text-muted-foreground hover:text-foreground transition-colors",
+                  (isActive || pathname === item.to) && "text-foreground",
+                )
+              }
+            >
+              {item.label}
+            </NavLink>
+          ))}
+        </nav>
+        <div className="flex items-center gap-2">
+          <Button variant="ghost" className="hidden sm:inline-flex">Log in</Button>
+          <Button className="bg-primary hover:bg-primary/90">Sign up</Button>
+        </div>
+      </div>
+    </header>
+  );
+}

@@ -1,0 +1,44 @@
+import { Heart, MapPin, BedSingle, Bath, Ruler } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
+export interface Property {
+  id: string;
+  title: string;
+  price: number;
+  location: string;
+  beds: number;
+  baths: number;
+  sqft: number;
+  image: string;
+}
+
+export default function PropertyCard({ property }: { property: Property }) {
+  return (
+    <div className="group overflow-hidden rounded-xl border bg-white shadow-sm hover:shadow-md transition-shadow">
+      <div className="relative aspect-[4/3] overflow-hidden">
+        <img src={property.image} alt={property.title} className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" />
+        <button aria-label="favorite" className="absolute right-3 top-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-foreground shadow hover:bg-white">
+          <Heart size={18} />
+        </button>
+        <div className="absolute left-3 bottom-3 rounded-md bg-black/60 px-2 py-1 text-xs text-white">
+          <div className="flex items-center gap-1"><MapPin size={12} />{property.location}</div>
+        </div>
+      </div>
+      <div className="p-4">
+        <div className="flex items-baseline justify-between">
+          <h3 className="font-semibold text-lg">${""}{property.price.toLocaleString()}</h3>
+          <span className="text-xs text-muted-foreground">/mo</span>
+        </div>
+        <p className="text-sm text-muted-foreground mt-1 line-clamp-1">{property.title}</p>
+        <div className="mt-3 flex items-center gap-4 text-sm text-muted-foreground">
+          <div className="flex items-center gap-1"><BedSingle size={16} />{property.beds} bd</div>
+          <div className="flex items-center gap-1"><Bath size={16} />{property.baths} ba</div>
+          <div className="flex items-center gap-1"><Ruler size={16} />{property.sqft.toLocaleString()} sqft</div>
+        </div>
+        <div className="mt-4">
+          <Button className="w-full">View details</Button>
+        </div>
+      </div>
+    </div>
+  );
+}
