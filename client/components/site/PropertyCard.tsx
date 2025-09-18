@@ -11,6 +11,8 @@ export interface Property {
   baths: number;
   sqft: number;
   image: string;
+  pets?: { cats: boolean; dogs: boolean };
+  amenities?: string[];
 }
 
 export default function PropertyCard({ property }: { property: Property }) {
