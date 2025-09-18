@@ -11,6 +11,8 @@ export const properties: Property[] = [
     sqft: 920,
     image:
       "https://images.unsplash.com/photo-1501183638710-841dd1904471?q=80&w=1600&auto=format&fit=crop",
+    pets: { cats: true, dogs: false },
+    amenities: ["Laundry", "Dishwasher", "Hardwood floors", "Doorman"],
   },
   {
     id: "p2",
