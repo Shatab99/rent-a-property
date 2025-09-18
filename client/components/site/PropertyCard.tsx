@@ -19,7 +19,18 @@ export default function PropertyCard({ property }: { property: Property }) {
   return (
     <div className="group overflow-hidden rounded-xl border bg-white shadow-sm hover:shadow-md transition-shadow">
       <div className="relative aspect-[4/3] overflow-hidden">
-        <img src={property.image} alt={property.title} className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" />
+        <img
+          src={property.image}
+          alt={property.title}
+          className="h-full w-full object-cover transition-all duration-300 group-hover:scale-105 group-hover:opacity-0"
+        />
+        {property.images?.[1] && (
+          <img
+            src={property.images[1]}
+            alt={property.title}
+            className="absolute inset-0 h-full w-full object-cover transition-all duration-300 opacity-0 group-hover:opacity-100"
+          />
+        )}
         <button aria-label="favorite" className="absolute right-3 top-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-foreground shadow hover:bg-white">
           <Heart size={18} />
         </button>
