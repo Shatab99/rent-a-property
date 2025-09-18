@@ -12,6 +12,8 @@ import Listings from "./pages/Listings";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import PropertyDetail from "./pages/PropertyDetail";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
