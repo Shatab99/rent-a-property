@@ -1,5 +1,6 @@
 import { Heart, MapPin, BedSingle, Bath, Ruler } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 export interface Property {
   id: string;
@@ -36,7 +37,7 @@ export default function PropertyCard({ property }: { property: Property }) {
           <div className="flex items-center gap-1"><Ruler size={16} />{property.sqft.toLocaleString()} sqft</div>
         </div>
         <div className="mt-4">
-          <Button className="w-full">View details</Button>
+          <Button asChild className="w-full"><Link to={`/property/${property.id}`}>View details</Link></Button>
         </div>
       </div>
     </div>
