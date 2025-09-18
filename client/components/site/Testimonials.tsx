@@ -20,7 +20,10 @@ export default function Testimonials() {
     <div className="relative">
       <div className="grid gap-4 sm:grid-cols-3">
         {items.map((it) => (
-          <div key={it.name} className="rounded-xl border bg-white p-6 shadow-sm">
+          <div
+            key={it.name}
+            className="rounded-xl border bg-white p-6 shadow-sm"
+          >
             <div className="flex items-center gap-1 text-yellow-500">
               {Array.from({ length: 5 }).map((_, i) => (
                 <Star key={i} size={16} fill="currentColor" />

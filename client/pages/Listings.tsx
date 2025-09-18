@@ -5,7 +5,13 @@ import FiltersPanel, { type Filters } from "@/components/site/FiltersPanel";
 import { properties } from "@/data/properties";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { SlidersHorizontal, LayoutGrid, List, Map } from "lucide-react";
 
@@ -28,13 +34,19 @@ export default function Listings() {
   const filtered: Property[] = useMemo(() => {
     const query = filters.query.trim().toLowerCase();
     return properties
-      .filter((p) =>
-        (!query || p.title.toLowerCase().includes(query) || p.location.toLowerCase().includes(query)) &&
-        p.price >= filters.price[0] && p.price <= filters.price[1] &&
-        (filters.minBeds < 0 || p.beds >= filters.minBeds) &&
-        (!filters.pets.cats || p.pets?.cats) &&
-        (!filters.pets.dogs || p.pets?.dogs) &&
-        Object.entries(filters.amenities).every(([a, v]) => !v || p.amenities?.includes(a))
+      .filter(
+        (p) =>
+          (!query ||
+            p.title.toLowerCase().includes(query) ||
+            p.location.toLowerCase().includes(query)) &&
+          p.price >= filters.price[0] &&
+          p.price <= filters.price[1] &&
+          (filters.minBeds < 0 || p.beds >= filters.minBeds) &&
+          (!filters.pets.cats || p.pets?.cats) &&
+          (!filters.pets.dogs || p.pets?.dogs) &&
+          Object.entries(filters.amenities).every(
+            ([a, v]) => !v || p.amenities?.includes(a),
+          ),
       )
       .sort((a, b) => {
         switch (sort) {
@@ -63,15 +75,28 @@ export default function Listings() {
             <div className="flex items-center gap-2">
               <Sheet>
                 <SheetTrigger asChild>
-                  <Button variant="outline" className="gap-2 md:hidden"><SlidersHorizontal size={16} /> Filters</Button>
+                  <Button variant="outline" className="gap-2 md:hidden">
+                    <SlidersHorizontal size={16} /> Filters
+                  </Button>
                 </SheetTrigger>
                 <SheetContent side="left" className="w-full sm:max-w-md">
                   <h3 className="text-lg font-semibold mb-4">Filters</h3>
-                  <FiltersPanel filters={filters} setFilters={setFilters} onApply={() => {}} onReset={resetFilters} />
+                  <FiltersPanel
+                    filters={filters}
+                    setFilters={setFilters}
+                    onApply={() => {}}
+                    onReset={resetFilters}
+                  />
                 </SheetContent>
               </Sheet>
               <div className="hidden md:block w-72">
-                <Input placeholder="Search location" value={filters.query} onChange={(e)=> setFilters({ ...filters, query: e.target.value })} />
+                <Input
+                  placeholder="Search location"
+                  value={filters.query}
+                  onChange={(e) =>
+                    setFilters({ ...filters, query: e.target.value })
+                  }
+                />
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -83,15 +108,37 @@ export default function Listings() {
                   <SelectItem value="recommended">Recommended</SelectItem>
                   <SelectItem value="price_asc">Price: Low to High</SelectItem>
                   <SelectItem value="price_desc">Price: High to Low</SelectItem>
-                  <SelectItem value="sqft_desc">Size: Large to Small</SelectItem>
+                  <SelectItem value="sqft_desc">
+                    Size: Large to Small
+                  </SelectItem>
                 </SelectContent>
               </Select>
-              <Button variant={view==="grid"?"default":"outline"} className="gap-2" onClick={()=> setView("grid")}><LayoutGrid size={16}/> Grid</Button>
-              <Button variant={view==="list"?"default":"outline"} className="gap-2" onClick={()=> setView("list")}><List size={16}/> List</Button>
-              <Button variant={showMap?"default":"outline"} className="gap-2 hidden sm:inline-flex" onClick={()=> setShowMap((v)=>!v)}><Map size={16}/> Map</Button>
+              <Button
+                variant={view === "grid" ? "default" : "outline"}
+                className="gap-2"
+                onClick={() => setView("grid")}
+              >
+                <LayoutGrid size={16} /> Grid
+              </Button>
+              <Button
+                variant={view === "list" ? "default" : "outline"}
+                className="gap-2"
+                onClick={() => setView("list")}
+              >
+                <List size={16} /> List
+              </Button>
+              <Button
+                variant={showMap ? "default" : "outline"}
+                className="gap-2 hidden sm:inline-flex"
+                onClick={() => setShowMap((v) => !v)}
+              >
+                <Map size={16} /> Map
+              </Button>
             </div>
           </div>
-          <div className="mt-3 text-sm text-muted-foreground">{filtered.length} results</div>
+          <div className="mt-3 text-sm text-muted-foreground">
+            {filtered.length} results
+          </div>
         </div>
       </section>
 
@@ -101,17 +148,38 @@ export default function Listings() {
           {/* Sidebar */}
           <aside className="hidden md:block md:col-span-3">
             <div className="rounded-xl border bg-white p-4 shadow-sm sticky top-24">
-              <FiltersPanel filters={filters} setFilters={setFilters} onApply={() => {}} onReset={resetFilters} />
+              <FiltersPanel
+                filters={filters}
+                setFilters={setFilters}
+                onApply={() => {}}
+                onReset={resetFilters}
+              />
             </div>
           </aside>
 
           {/* Results + optional map */}
-          <div className={showMap ? "md:col-span-9 grid md:grid-cols-12 gap-6" : "md:col-span-9"}>
+          <div
+            className={
+              showMap
+                ? "md:col-span-9 grid md:grid-cols-12 gap-6"
+                : "md:col-span-9"
+            }
+          >
             <div className={showMap ? "md:col-span-7" : ""}>
-              <div className={view === "grid" ? "grid gap-6 sm:grid-cols-2 lg:grid-cols-2" : "grid gap-4"}>
-                {filtered.map((p) => (
-                  view === "grid" ? <PropertyCard key={p.id} property={p} /> : <PropertyRow key={p.id} property={p} />
-                ))}
+              <div
+                className={
+                  view === "grid"
+                    ? "grid gap-6 sm:grid-cols-2 lg:grid-cols-2"
+                    : "grid gap-4"
+                }
+              >
+                {filtered.map((p) =>
+                  view === "grid" ? (
+                    <PropertyCard key={p.id} property={p} />
+                  ) : (
+                    <PropertyRow key={p.id} property={p} />
+                  ),
+                )}
               </div>
             </div>
             {showMap && (

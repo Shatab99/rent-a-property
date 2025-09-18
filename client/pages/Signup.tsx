@@ -12,8 +12,12 @@ export default function Signup() {
       <section className="py-16">
         <div className="mx-auto max-w-md px-4 sm:px-6 lg:px-8">
           <div className="rounded-xl border bg-white p-6 shadow-sm">
-            <h1 className="text-2xl font-bold tracking-tight">Create your account</h1>
-            <p className="mt-2 text-sm text-muted-foreground">Join Rentora to find, tour, and apply faster.</p>
+            <h1 className="text-2xl font-bold tracking-tight">
+              Create your account
+            </h1>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Join Rentora to find, tour, and apply faster.
+            </p>
             <form
               className="mt-6 space-y-4"
               onSubmit={(e) => {
@@ -36,7 +40,13 @@ export default function Signup() {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
-                <Input id="email" name="email" type="email" placeholder="you@example.com" required />
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="you@example.com"
+                  required
+                />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="password">Password</Label>
@@ -47,11 +57,25 @@ export default function Signup() {
                 <Input id="confirm" name="confirm" type="password" required />
               </div>
               <label className="flex items-center gap-2 text-sm">
-                <Checkbox required /> I agree to the <a href="#" className="text-primary hover:underline">Terms</a> and <a href="#" className="text-primary hover:underline">Privacy</a>
+                <Checkbox required /> I agree to the{" "}
+                <a href="#" className="text-primary hover:underline">
+                  Terms
+                </a>{" "}
+                and{" "}
+                <a href="#" className="text-primary hover:underline">
+                  Privacy
+                </a>
               </label>
-              <Button type="submit" className="w-full">Create account</Button>
+              <Button type="submit" className="w-full">
+                Create account
+              </Button>
             </form>
-            <p className="mt-4 text-sm text-muted-foreground">Already have an account? <Link to="/login" className="text-primary hover:underline">Log in</Link></p>
+            <p className="mt-4 text-sm text-muted-foreground">
+              Already have an account?{" "}
+              <Link to="/login" className="text-primary hover:underline">
+                Log in
+              </Link>
+            </p>
           </div>
         </div>
       </section>

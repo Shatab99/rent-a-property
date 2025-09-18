@@ -1,6 +1,12 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
@@ -53,7 +59,9 @@ export default function FiltersPanel({
         <Label>Price range</Label>
         <Slider
           value={[filters.price[0], filters.price[1]]}
-          onValueChange={(v) => setFilters({ ...filters, price: [v[0], v[1]] as [number, number] })}
+          onValueChange={(v) =>
+            setFilters({ ...filters, price: [v[0], v[1]] as [number, number] })
+          }
           min={500}
           max={8000}
           step={50}
@@ -87,8 +95,30 @@ export default function FiltersPanel({
       <div className="space-y-3">
         <Label>Pet policy</Label>
         <div className="grid grid-cols-2 gap-3 text-sm">
-          <label className="flex items-center gap-2"><Checkbox checked={filters.pets.cats} onCheckedChange={(v) => setFilters({ ...filters, pets: { ...filters.pets, cats: Boolean(v) } })} /> Cats</label>
-          <label className="flex items-center gap-2"><Checkbox checked={filters.pets.dogs} onCheckedChange={(v) => setFilters({ ...filters, pets: { ...filters.pets, dogs: Boolean(v) } })} /> Dogs</label>
+          <label className="flex items-center gap-2">
+            <Checkbox
+              checked={filters.pets.cats}
+              onCheckedChange={(v) =>
+                setFilters({
+                  ...filters,
+                  pets: { ...filters.pets, cats: Boolean(v) },
+                })
+              }
+            />{" "}
+            Cats
+          </label>
+          <label className="flex items-center gap-2">
+            <Checkbox
+              checked={filters.pets.dogs}
+              onCheckedChange={(v) =>
+                setFilters({
+                  ...filters,
+                  pets: { ...filters.pets, dogs: Boolean(v) },
+                })
+              }
+            />{" "}
+            Dogs
+          </label>
         </div>
       </div>
 
@@ -96,14 +126,29 @@ export default function FiltersPanel({
         <Label>Amenities</Label>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
           {AMENITIES.map((a) => (
-            <label key={a} className="flex items-center gap-2"><Checkbox checked={Boolean(filters.amenities[a])} onCheckedChange={(v) => setFilters({ ...filters, amenities: { ...filters.amenities, [a]: Boolean(v) } })} /> {a}</label>
+            <label key={a} className="flex items-center gap-2">
+              <Checkbox
+                checked={Boolean(filters.amenities[a])}
+                onCheckedChange={(v) =>
+                  setFilters({
+                    ...filters,
+                    amenities: { ...filters.amenities, [a]: Boolean(v) },
+                  })
+                }
+              />{" "}
+              {a}
+            </label>
           ))}
         </div>
       </div>
 
       <div className="flex items-center gap-2 pt-2">
-        <Button onClick={onApply} className="flex-1">Apply</Button>
-        <Button variant="outline" onClick={onReset} className="flex-1">Reset</Button>
+        <Button onClick={onApply} className="flex-1">
+          Apply
+        </Button>
+        <Button variant="outline" onClick={onReset} className="flex-1">
+          Reset
+        </Button>
       </div>
     </div>
   );

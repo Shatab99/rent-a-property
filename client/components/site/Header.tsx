@@ -16,7 +16,9 @@ export default function Header() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2">
           <div className="h-8 w-8 rounded-md bg-primary " />
-          <span className="font-extrabold tracking-tight text-xl text-primary">Rentora</span>
+          <span className="font-extrabold tracking-tight text-xl text-primary">
+            Rentora
+          </span>
         </Link>
         <nav className="hidden md:flex items-center gap-6">
           {navItems.map((item) => (
@@ -35,8 +37,12 @@ export default function Header() {
           ))}
         </nav>
         <div className="flex items-center gap-2">
-          <Button asChild variant="ghost" className="hidden sm:inline-flex"><Link to="/login">Log in</Link></Button>
-          <Button asChild className="bg-primary hover:bg-primary/90"><Link to="/signup">Sign up</Link></Button>
+          <Button asChild variant="ghost" className="hidden sm:inline-flex">
+            <Link to="/login">Log in</Link>
+          </Button>
+          <Button asChild className="bg-primary hover:bg-primary/90">
+            <Link to="/signup">Sign up</Link>
+          </Button>
         </div>
       </div>
     </header>
