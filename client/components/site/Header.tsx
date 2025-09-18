@@ -35,8 +35,8 @@ export default function Header() {
           ))}
         </nav>
         <div className="flex items-center gap-2">
-          <Button variant="ghost" className="hidden sm:inline-flex">Log in</Button>
-          <Button className="bg-primary hover:bg-primary/90">Sign up</Button>
+          <Button asChild variant="ghost" className="hidden sm:inline-flex"><Link to="/login">Log in</Link></Button>
+          <Button asChild className="bg-primary hover:bg-primary/90"><Link to="/signup">Sign up</Link></Button>
         </div>
       </div>
     </header>
