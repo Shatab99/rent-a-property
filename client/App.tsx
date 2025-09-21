@@ -15,6 +15,9 @@ import PropertyDetail from "./pages/PropertyDetail";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import NotFound from "./pages/NotFound";
+import Dashboard from "./pages/Dashboard";
+import FindAgent from "./pages/FindAgent";
+import ProtectedRoute from "@/components/site/ProtectedRoute";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +32,8 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/listings" element={<Listings />} />
             <Route path="/property/:id" element={<PropertyDetail />} />
+            <Route path="/find-agent" element={<FindAgent />} />
+            <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/login" element={<Login />} />
