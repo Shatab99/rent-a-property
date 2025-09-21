@@ -6,7 +6,7 @@ import type { Property } from "@/components/site/PropertyCard";
 export default function PropertyRow({ property }: { property: Property }) {
   return (
     <div className="group overflow-hidden rounded-xl border bg-white shadow-sm hover:shadow-md transition-shadow flex flex-col sm:flex-row">
-      <div className="relative sm:w-64 aspect-[4/3] sm:aspect-auto overflow-hidden">
+      <div className="relative sm:w-64 aspect-[4/3] overflow-hidden">
         <img
           src={property.image}
           alt={property.title}
