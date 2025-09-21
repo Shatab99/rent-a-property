@@ -206,10 +206,18 @@ export default function PropertyDetail() {
                 className="mt-6 space-y-3"
                 onSubmit={(e) => {
                   e.preventDefault();
-                  const data = new FormData(e.currentTarget as HTMLFormElement);
+                  const form = e.currentTarget as HTMLFormElement;
+                  const data = new FormData(form);
                   const name = data.get("name") as string;
+                  try {
+                    const raw = localStorage.getItem("contacted") || "[]";
+                    const ids: string[] = JSON.parse(raw);
+                    if (!ids.includes(property.id)) ids.push(property.id);
+                    localStorage.setItem("contacted", JSON.stringify(ids));
+                  } catch {}
                   toast.success(`Thanks ${name}, we will reach out soon.`);
-                  (e.currentTarget as HTMLFormElement).reset();
+                  form.reset();
+                  window.dispatchEvent(new Event("contacted-change"));
                 }}
               >
                 <div className="text-sm font-semibold">Contact landlord</div>
