@@ -26,7 +26,9 @@ export default function Login() {
                 localStorage.setItem("userEmail", email);
                 window.dispatchEvent(new Event("auth-change"));
                 toast.success(`Logged in as ${email}`);
-                const next = new URLSearchParams(window.location.search).get("next");
+                const next = new URLSearchParams(window.location.search).get(
+                  "next",
+                );
                 form.reset();
                 navigate(next || "/");
               }}

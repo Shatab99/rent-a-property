@@ -13,7 +13,11 @@ export default function AgentCard({ agent }: { agent: Agent }) {
             loading="lazy"
             decoding="async"
             onError={(e) => {
-              const el = e.currentTarget; if (el.dataset.fallback !== "1") { el.src = "/placeholder.svg"; el.dataset.fallback = "1"; }
+              const el = e.currentTarget;
+              if (el.dataset.fallback !== "1") {
+                el.src = "/placeholder.svg";
+                el.dataset.fallback = "1";
+              }
             }}
             className="h-full w-full object-cover"
           />
@@ -22,18 +26,25 @@ export default function AgentCard({ agent }: { agent: Agent }) {
           <div className="flex items-center justify-between">
             <div>
               <h3 className="text-lg font-semibold">{agent.name}</h3>
-              <div className="text-sm text-muted-foreground">{agent.city} • {agent.specialty}</div>
+              <div className="text-sm text-muted-foreground">
+                {agent.city} • {agent.specialty}
+              </div>
             </div>
             <div className="inline-flex items-center gap-1 text-sm font-medium">
-              <Star className="text-yellow-500" size={16} /> {agent.rating.toFixed(1)}
+              <Star className="text-yellow-500" size={16} />{" "}
+              {agent.rating.toFixed(1)}
             </div>
           </div>
           <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
             <Button asChild variant="outline" className="justify-start">
-              <a href={`tel:${agent.phone}`}><Phone className="mr-2" size={16} /> {agent.phone}</a>
+              <a href={`tel:${agent.phone}`}>
+                <Phone className="mr-2" size={16} /> {agent.phone}
+              </a>
             </Button>
             <Button asChild variant="outline" className="justify-start">
-              <a href={`mailto:${agent.email}`}><Mail className="mr-2" size={16} /> {agent.email}</a>
+              <a href={`mailto:${agent.email}`}>
+                <Mail className="mr-2" size={16} /> {agent.email}
+              </a>
             </Button>
           </div>
         </div>

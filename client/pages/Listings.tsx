@@ -177,7 +177,9 @@ export default function Listings() {
                   <div className="col-span-full text-center py-16 text-muted-foreground">
                     No results match your filters.
                     <div className="mt-4">
-                      <Button variant="outline" onClick={resetFilters}>Reset filters</Button>
+                      <Button variant="outline" onClick={resetFilters}>
+                        Reset filters
+                      </Button>
                     </div>
                   </div>
                 ) : (
