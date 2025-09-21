@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -12,8 +13,8 @@ const navItems = [
 
 export default function Header() {
   const { pathname } = useLocation();
-  const [email, setEmail] = React.useState<string | null>(null);
-  React.useEffect(() => {
+  const [email, setEmail] = useState<string | null>(null);
+  useEffect(() => {
     const sync = () => setEmail(localStorage.getItem("userEmail"));
     sync();
     window.addEventListener("storage", sync);
