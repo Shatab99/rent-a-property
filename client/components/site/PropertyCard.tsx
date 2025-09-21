@@ -1,4 +1,3 @@
-import { Heart, MapPin, BedSingle, Bath, Ruler } from "lucide-react";
 import React from "react";
 import { Heart, MapPin, BedSingle, Bath, Ruler } from "lucide-react";
 import { Button } from "@/components/ui/button";
