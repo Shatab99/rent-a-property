@@ -29,7 +29,7 @@ export default function FindAgent() {
             <Select value={specialty} onValueChange={setSpecialty}>
               <SelectTrigger><SelectValue placeholder="Specialty" /></SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Any</SelectItem>
+                <SelectItem value="any">Any</SelectItem>
                 {specialties.map(s => (<SelectItem key={s} value={s}>{s}</SelectItem>))}
               </SelectContent>
             </Select>
