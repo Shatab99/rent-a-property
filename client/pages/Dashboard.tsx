@@ -3,18 +3,26 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { properties } from "@/data/properties";
 import PropertyRow from "@/components/site/PropertyRow";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 type Profile = {
   name: string;
   email: string;
   address?: string;
   phone?: string;
+  about?: string;
+  employment?: string;
+  householdSize?: number;
+  moveIn?: string; // ISO date
+  creditScore?: number;
 };
-type Prefs = { targetCity?: string; maxBudget?: number };
-type Collaborator = { email: string; status: "invited" | "accepted" };
+type Prefs = { targetCity?: string; maxBudget?: number; minBeds?: number; pets?: "none" | "cats" | "dogs" | "both" };
+type Collaborator = { email: string; status: "invited" | "accepted"; role: "buyer" | "cosigner" | "agent"; message?: string };
 
 export default function Dashboard() {
   const [profile, setProfile] = useState<Profile>(() => {
@@ -38,6 +46,7 @@ export default function Dashboard() {
       return [];
     }
   });
+  const [inviteOpen, setInviteOpen] = useState(false);
   const [contactedIds, setContactedIds] = useState<string[]>(() => {
     try {
       return JSON.parse(localStorage.getItem("contacted") || "[]");
@@ -45,6 +54,40 @@ export default function Dashboard() {
       return [];
     }
   });
+
+  useEffect(() => {
+    // Seed dummy data if absent
+    try {
+      const existingProfile = localStorage.getItem("profile");
+      if (!existingProfile) {
+        const seeded: Profile = {
+          name: "Jordan Lee",
+          email: localStorage.getItem("userEmail") || "jordan@example.com",
+          phone: "(415) 555-0142",
+          address: "245 Market St, San Francisco, CA",
+          about: "Product manager relocating for a new role. Quiet, tidy, and reliable tenant with excellent references.",
+          employment: "Full-time at Acme Inc. (4+ years)",
+          householdSize: 2,
+          moveIn: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30).toISOString().slice(0, 10),
+          creditScore: 760,
+        };
+        localStorage.setItem("profile", JSON.stringify(seeded));
+        setProfile(seeded);
+      }
+      const existingPrefs = localStorage.getItem("preferences");
+      if (!existingPrefs) {
+        const seededPrefs: Prefs = { targetCity: "San Francisco, CA", maxBudget: 3800, minBeds: 1, pets: "cats" };
+        localStorage.setItem("preferences", JSON.stringify(seededPrefs));
+        setPrefs(seededPrefs);
+      }
+      const contactedRaw = localStorage.getItem("contacted");
+      if (!contactedRaw || contactedRaw === "[]") {
+        const seededContacted = ["p1", "p3"];
+        localStorage.setItem("contacted", JSON.stringify(seededContacted));
+        setContactedIds(seededContacted);
+      }
+    } catch {}
+  }, []);
 
   useEffect(() => {
     const onChange = () =>
@@ -91,34 +134,17 @@ export default function Dashboard() {
               <TabsContent value="profile" className="mt-6">
                 <div className="grid gap-6 md:grid-cols-2">
                   <div className="rounded-xl border bg-white p-6 shadow-sm">
-                    <h2 className="text-lg font-semibold">Profile summary</h2>
+                    <h2 className="text-lg font-semibold">Buyer profile</h2>
                     <div className="mt-4 grid gap-3 text-sm">
-                      <div>
-                        <span className="text-muted-foreground">Name:</span>{" "}
-                        <span className="font-medium">
-                          {profile.name || "—"}
-                        </span>
-                      </div>
-                      <div>
-                        <span className="text-muted-foreground">Email:</span>{" "}
-                        <span className="font-medium">
-                          {profile.email ||
-                            localStorage.getItem("userEmail") ||
-                            "—"}
-                        </span>
-                      </div>
-                      <div>
-                        <span className="text-muted-foreground">Phone:</span>{" "}
-                        <span className="font-medium">
-                          {profile.phone || "—"}
-                        </span>
-                      </div>
-                      <div>
-                        <span className="text-muted-foreground">Address:</span>{" "}
-                        <span className="font-medium">
-                          {profile.address || "—"}
-                        </span>
-                      </div>
+                      <div><span className="text-muted-foreground">Name:</span> <span className="font-medium">{profile.name || "—"}</span></div>
+                      <div><span className="text-muted-foreground">Email:</span> <span className="font-medium">{profile.email || localStorage.getItem("userEmail") || "—"}</span></div>
+                      <div><span className="text-muted-foreground">Phone:</span> <span className="font-medium">{profile.phone || "—"}</span></div>
+                      <div><span className="text-muted-foreground">Address:</span> <span className="font-medium">{profile.address || "—"}</span></div>
+                      <div><span className="text-muted-foreground">Employment:</span> <span className="font-medium">{profile.employment || "—"}</span></div>
+                      <div><span className="text-muted-foreground">Household size:</span> <span className="font-medium">{profile.householdSize ?? "—"}</span></div>
+                      <div><span className="text-muted-foreground">Move-in:</span> <span className="font-medium">{profile.moveIn || "—"}</span></div>
+                      <div><span className="text-muted-foreground">Credit score:</span> <span className="font-medium">{profile.creditScore ?? "—"}</span></div>
+                      <div className="pt-2"><span className="text-muted-foreground">About:</span><p className="mt-1 text-foreground">{profile.about || "—"}</p></div>
                     </div>
                   </div>
                   <div className="rounded-xl border bg-white p-6 shadow-sm">
@@ -308,91 +334,82 @@ export default function Dashboard() {
 
               <TabsContent value="collab" className="mt-6">
                 <div className="rounded-xl border bg-white p-6 shadow-sm">
-                  <h2 className="text-lg font-semibold">Collaborate</h2>
-                  <p className="mt-1 text-sm text-muted-foreground">
-                    Invite someone to search and apply together.
-                  </p>
-                  <form
-                    className="mt-4 flex flex-col sm:flex-row gap-2"
-                    onSubmit={(e) => {
-                      e.preventDefault();
-                      const data = new FormData(
-                        e.currentTarget as HTMLFormElement,
-                      );
-                      const email = String(data.get("collab-email"));
-                      if (!email) return;
-                      const next = [
-                        ...collabs,
-                        { email, status: "invited" as const },
-                      ];
-                      setCollabs(next);
-                      localStorage.setItem(
-                        "collaborators",
-                        JSON.stringify(next),
-                      );
-                      (e.currentTarget as HTMLFormElement).reset();
-                      toast.success("Invitation sent");
-                    }}
-                  >
-                    <Input
-                      name="collab-email"
-                      type="email"
-                      placeholder="collaborator@example.com"
-                      required
-                    />
-                    <Button type="submit">Invite</Button>
-                  </form>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h2 className="text-lg font-semibold">Collaborate</h2>
+                      <p className="mt-1 text-sm text-muted-foreground">Invite someone to search and apply together.</p>
+                    </div>
+                    <Dialog open={inviteOpen} onOpenChange={setInviteOpen}>
+                      <DialogTrigger asChild>
+                        <Button>Invite collaborator</Button>
+                      </DialogTrigger>
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle>Invite a collaborator</DialogTitle>
+                          <DialogDescription>Send an invitation to collaborate on your rental search.</DialogDescription>
+                        </DialogHeader>
+                        <form className="mt-4 grid gap-3" onSubmit={(e) => {
+                          e.preventDefault();
+                          const data = new FormData(e.currentTarget as HTMLFormElement);
+                          const email = String(data.get("email"));
+                          const role = String(data.get("role")) as Collaborator["role"];
+                          const message = String(data.get("message") || "");
+                          if (!email || !role) return;
+                          const next = [...collabs, { email, status: "invited", role, message }];
+                          setCollabs(next);
+                          localStorage.setItem("collaborators", JSON.stringify(next));
+                          setInviteOpen(false);
+                          toast.success("Invitation sent");
+                        }}>
+                          <div className="space-y-2">
+                            <Label htmlFor="invite-email">Email</Label>
+                            <Input id="invite-email" name="email" type="email" placeholder="teammate@example.com" required />
+                          </div>
+                          <div className="space-y-2">
+                            <Label>Role</Label>
+                            <Select name="role" defaultValue="buyer" onValueChange={() => {}}>
+                              <SelectTrigger><SelectValue placeholder="Select role" /></SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="buyer">Buyer/Renter</SelectItem>
+                                <SelectItem value="cosigner">Co-signer</SelectItem>
+                                <SelectItem value="agent">Agent</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="invite-message">Message</Label>
+                            <Textarea id="invite-message" name="message" placeholder="Add a note (optional)" />
+                          </div>
+                          <div className="pt-2"><Button type="submit">Send invite</Button></div>
+                        </form>
+                      </DialogContent>
+                    </Dialog>
+                  </div>
+
                   <div className="mt-4 grid gap-2 text-sm">
                     {collabs.length === 0 ? (
-                      <div className="text-muted-foreground">
-                        No collaborators yet.
-                      </div>
+                      <div className="text-muted-foreground">No collaborators yet.</div>
                     ) : (
                       collabs.map((c, i) => (
-                        <div
-                          key={i}
-                          className="flex items-center justify-between rounded-md border p-3"
-                        >
+                        <div key={i} className="flex items-center justify-between rounded-md border p-3">
                           <div>
                             <div className="font-medium">{c.email}</div>
-                            <div className="text-xs text-muted-foreground">
-                              Status: {c.status}
-                            </div>
+                            <div className="text-xs text-muted-foreground">Role: {c.role} • Status: {c.status}</div>
                           </div>
                           <div className="flex items-center gap-2">
                             {c.status === "invited" && (
-                              <Button
-                                size="sm"
-                                variant="outline"
-                                onClick={() => {
-                                  const next = [...collabs];
-                                  next[i] = { ...next[i], status: "accepted" };
-                                  setCollabs(next);
-                                  localStorage.setItem(
-                                    "collaborators",
-                                    JSON.stringify(next),
-                                  );
-                                }}
-                              >
-                                Mark accepted
-                              </Button>
-                            )}
-                            <Button
-                              size="sm"
-                              variant="destructive"
-                              onClick={() => {
-                                const next = collabs.filter(
-                                  (_, idx) => idx !== i,
-                                );
+                              <Button size="sm" variant="outline" onClick={() => {
+                                const next = [...collabs];
+                                next[i] = { ...next[i], status: "accepted" };
                                 setCollabs(next);
-                                localStorage.setItem(
-                                  "collaborators",
-                                  JSON.stringify(next),
-                                );
-                              }}
-                            >
-                              Remove
-                            </Button>
+                                localStorage.setItem("collaborators", JSON.stringify(next));
+                              }}>Mark accepted</Button>
+                            )}
+                            <Button size="sm" variant="destructive" onClick={() => {
+                              const next = collabs.filter((_, idx) => idx !== i);
+                              setCollabs(next);
+                              localStorage.setItem("collaborators", JSON.stringify(next));
+                            }}>Remove</Button>
                           </div>
                         </div>
                       ))
