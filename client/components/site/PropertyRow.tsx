@@ -10,6 +10,15 @@ export default function PropertyRow({ property }: { property: Property }) {
         <img
           src={property.image}
           alt={property.title}
+          loading="lazy"
+          decoding="async"
+          onError={(e) => {
+            const el = e.currentTarget;
+            if (el.dataset.fallback !== "1") {
+              el.src = "/placeholder.svg";
+              el.dataset.fallback = "1";
+            }
+          }}
           className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
         />
         <button
