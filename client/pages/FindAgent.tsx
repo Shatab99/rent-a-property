@@ -6,14 +6,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 
 export default function FindAgent() {
   const [city, setCity] = useState("");
-  const [specialty, setSpecialty] = useState<string | "">("");
+  const [specialty, setSpecialty] = useState<string>("any");
   const [minRating, setMinRating] = useState<number>(0);
 
   const specialties = useMemo(() => Array.from(new Set(agents.map(a => a.specialty))), []);
 
   const filtered = agents.filter(a =>
     (!city || a.city.toLowerCase().includes(city.toLowerCase())) &&
-    (!specialty || a.specialty === specialty) &&
+    (specialty === "any" || a.specialty === specialty) &&
     a.rating >= minRating,
   );
 
