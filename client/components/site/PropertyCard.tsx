@@ -11,23 +11,38 @@ export interface Property {
   baths: number;
   sqft: number;
   image: string;
+  images?: string[];
   pets?: { cats: boolean; dogs: boolean };
   amenities?: string[];
 }
 
 export default function PropertyCard({ property }: { property: Property }) {
+  const hasAltImage = Boolean(property.images?.[1]);
+  const onImgError: React.ReactEventHandler<HTMLImageElement> = (e) => {
+    const el = e.currentTarget;
+    if (el.dataset.fallback !== "1") {
+      el.src = "/placeholder.svg";
+      el.dataset.fallback = "1";
+    }
+  };
   return (
     <div className="group overflow-hidden rounded-xl border bg-white shadow-sm hover:shadow-md transition-shadow">
       <div className="relative aspect-[4/3] overflow-hidden">
         <img
           src={property.image}
           alt={property.title}
-          className="h-full w-full object-cover transition-all duration-300 group-hover:scale-105 group-hover:opacity-0"
+          loading="lazy"
+          decoding="async"
+          onError={onImgError}
+          className={`h-full w-full object-cover transition-all duration-300 group-hover:scale-105${hasAltImage ? " group-hover:opacity-0" : ""}`}
         />
-        {property.images?.[1] && (
+        {hasAltImage && (
           <img
-            src={property.images[1]}
+            src={property.images![1]}
             alt={property.title}
+            loading="lazy"
+            decoding="async"
+            onError={onImgError}
             className="absolute inset-0 h-full w-full object-cover transition-all duration-300 opacity-0 group-hover:opacity-100"
           />
         )}
