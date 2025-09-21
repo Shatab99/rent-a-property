@@ -20,10 +20,15 @@ export default function Login() {
               className="mt-6 space-y-4"
               onSubmit={(e) => {
                 e.preventDefault();
-                const data = new FormData(e.currentTarget as HTMLFormElement);
-                const email = data.get("email");
+                const form = e.currentTarget as HTMLFormElement;
+                const data = new FormData(form);
+                const email = String(data.get("email"));
+                localStorage.setItem("userEmail", email);
+                window.dispatchEvent(new Event("auth-change"));
                 toast.success(`Logged in as ${email}`);
-                navigate("/");
+                const next = new URLSearchParams(window.location.search).get("next");
+                form.reset();
+                navigate(next || "/");
               }}
             >
               <div className="space-y-2">
