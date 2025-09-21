@@ -47,6 +47,7 @@ export default function Dashboard() {
     }
   });
   const [inviteOpen, setInviteOpen] = useState(false);
+  const [inviteRole, setInviteRole] = useState<Collaborator["role"]>("buyer");
   const [contactedIds, setContactedIds] = useState<string[]>(() => {
     try {
       return JSON.parse(localStorage.getItem("contacted") || "[]");
@@ -352,7 +353,7 @@ export default function Dashboard() {
                           e.preventDefault();
                           const data = new FormData(e.currentTarget as HTMLFormElement);
                           const email = String(data.get("email"));
-                          const role = String(data.get("role")) as Collaborator["role"];
+                          const role = inviteRole;
                           const message = String(data.get("message") || "");
                           if (!email || !role) return;
                           const next = [...collabs, { email, status: "invited", role, message }];
@@ -367,7 +368,7 @@ export default function Dashboard() {
                           </div>
                           <div className="space-y-2">
                             <Label>Role</Label>
-                            <Select name="role" defaultValue="buyer" onValueChange={() => {}}>
+                            <Select value={inviteRole} onValueChange={(v) => setInviteRole(v as Collaborator["role"]) }>
                               <SelectTrigger><SelectValue placeholder="Select role" /></SelectTrigger>
                               <SelectContent>
                                 <SelectItem value="buyer">Buyer/Renter</SelectItem>
