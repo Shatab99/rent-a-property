@@ -6,7 +6,7 @@ export default function AgentCard({ agent }: { agent: Agent }) {
   return (
     <div className="overflow-hidden rounded-xl border bg-white shadow-sm">
       <div className="flex flex-col sm:flex-row">
-        <div className="relative sm:w-48 aspect-square sm:aspect-auto overflow-hidden">
+        <div className="relative w-full sm:w-64 aspect-[4/3] overflow-hidden">
           <img
             src={agent.photo}
             alt={agent.name}
