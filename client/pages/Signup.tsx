@@ -30,7 +30,13 @@ export default function Signup() {
                   toast.error("Passwords do not match");
                   return;
                 }
+                const email = String(data.get("email"));
+                const name = String(data.get("name"));
+                localStorage.setItem("userEmail", email);
+                localStorage.setItem("profile", JSON.stringify({ name, email }));
+                window.dispatchEvent(new Event("auth-change"));
                 toast.success("Account created. Welcome!");
+                form.reset();
                 navigate("/");
               }}
             >
