@@ -173,12 +173,21 @@ export default function Listings() {
                     : "grid gap-4"
                 }
               >
-                {filtered.map((p) =>
-                  view === "grid" ? (
-                    <PropertyCard key={p.id} property={p} />
-                  ) : (
-                    <PropertyRow key={p.id} property={p} />
-                  ),
+                {filtered.length === 0 ? (
+                  <div className="col-span-full text-center py-16 text-muted-foreground">
+                    No results match your filters.
+                    <div className="mt-4">
+                      <Button variant="outline" onClick={resetFilters}>Reset filters</Button>
+                    </div>
+                  </div>
+                ) : (
+                  filtered.map((p) =>
+                    view === "grid" ? (
+                      <PropertyCard key={p.id} property={p} />
+                    ) : (
+                      <PropertyRow key={p.id} property={p} />
+                    ),
+                  )
                 )}
               </div>
             </div>
