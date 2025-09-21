@@ -1,5 +1,4 @@
 import { Heart, MapPin, BedSingle, Bath, Ruler } from "lucide-react";
-import { Heart, MapPin, BedSingle, Bath, Ruler } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import type { Property } from "@/components/site/PropertyCard";
