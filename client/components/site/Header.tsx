@@ -52,6 +52,11 @@ export default function Header() {
         <div className="flex items-center gap-2">
           {email ? (
             <>
+              {localStorage.getItem("isAdmin") === "1" && (
+                <Button asChild variant="outline" className="hidden sm:inline-flex">
+                  <Link to="/admin">Admin</Link>
+                </Button>
+              )}
               <Button asChild variant="ghost" className="hidden sm:inline-flex">
                 <Link to="/dashboard">Dashboard</Link>
               </Button>
@@ -59,6 +64,7 @@ export default function Header() {
                 variant="outline"
                 onClick={() => {
                   localStorage.removeItem("userEmail");
+                  localStorage.removeItem("isAdmin");
                   window.dispatchEvent(new Event("auth-change"));
                 }}
               >
